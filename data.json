@@ -1,0 +1,49 @@
+{
+  "products": [
+    {
+      "id": "1771872150487",
+      "category": "tienda",
+      "name": "INKAKOLA",
+      "brand": "",
+      "costUnit": 2,
+      "priceUnit": 3
+    },
+    {
+      "id": "1771872170974",
+      "category": "tienda",
+      "name": "CIFRUT",
+      "brand": "",
+      "costUnit": 1,
+      "priceUnit": 1.2
+    },
+    {
+      "id": "1771872517271",
+      "category": "tienda",
+      "name": "TEST PRODUCT",
+      "brand": "",
+      "costUnit": 5,
+      "priceUnit": 10
+    },
+    {
+      "id": "1771876394520",
+      "category": "alimentos",
+      "name": "MAÍZ ENTERO",
+      "brand": "",
+      "priceKilo": 1.8,
+      "sackWeight": 50,
+      "costSack": null,
+      "priceSack": 81
+    },
+    {
+      "id": "1771876410173",
+      "category": "alimentos",
+      "name": "RICOCAN",
+      "brand": "RICOCAN",
+      "priceKilo": 8,
+      "sackWeight": 15,
+      "costSack": null,
+      "priceSack": 105
+    }
+  ],
+  "customers": []
+}

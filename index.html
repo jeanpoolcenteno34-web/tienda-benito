@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda BENITO - Alimentos Balanceados</title>
+    <link rel="stylesheet" href="style.css?v=1">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="theme-color" content="#1a1a2e">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-header">
+            <div class="logo">
+                <i class="fa-solid fa-paw"></i>
+                <h1>Tienda BENITO</h1>
+            </div>
+            <div class="header-controls" style="display: flex; gap: 10px;">
+                <button id="toggleStoreModeBtn" class="mode-btn btn-primary">
+                    <i class="fa-solid fa-user-shield"></i> <span id="modeText">Modo Dueño</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Store Section -->
+            <section id="storeSection" class="active-section">
+                <div class="section-header">
+                    <h2>Vista de Empleado</h2>
+                    <p>Catálogo de precios de venta al público</p>
+                </div>
+
+                <div id="mainCategoryTabs" class="category-tabs glass-panel">
+                    <button class="tab-btn active" onclick="switchCategory('alimentos')">ALIMENTOS BALANCEADOS</button>
+                    <button class="tab-btn" onclick="switchCategory('tienda')">TIENDA BENITO</button>
+                    <button class="tab-btn" onclick="switchCategory('tienda_sl')">TIENDA SAN LUISITO</button>
+                </div>
+
+                <div id="tiendaSubTabs" class="category-tabs glass-panel hidden"
+                    style="margin-top: -15px; transform: scale(0.9); background: rgba(255,255,255,0.4);">
+                    <button class="tab-btn active" onclick="switchSubCategory('galletas')">GALLETAS Y PIQUEOS</button>
+                    <button class="tab-btn" onclick="switchSubCategory('bebidas')">BEBIDAS</button>
+                </div>
+
+                <!-- Shared Inventory View -->
+                <div id="clientInventoryArea">
+                    <div class="search-bar glass-panel">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar producto...">
+                        <button id="customersBtn" class="btn-secondary btn-small hidden"
+                            onclick="switchCategory('clientes')">
+                            <i class="fa-solid fa-users"></i> Clientes
+                        </button>
+                    </div>
+
+                    <div id="productsContainer" class="products-container glass-panel">
+                        <div id="listHeader" class="list-header">
+                            <div class="col-name">Producto</div>
+                            <div id="colMeasure" class="col-measure hidden">Medida</div>
+                            <div class="col-kilo">Precio Kilo</div>
+                            <div class="col-sack">Precio Saco</div>
+                        </div>
+                        <div id="productsGrid" class="products-list">
+                            <!-- Rows injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customers Section -->
+                <div id="customersArea" class="hidden">
+                    <div class="search-bar glass-panel">
+                        <i class="fa-solid fa-users"></i>
+                        <input type="text" id="customerSearchInput" placeholder="Buscar cliente...">
+                        <button class="btn-success" onclick="openCustomerModal()"><i
+                                class="fa-solid fa-user-plus"></i></button>
+                    </div>
+                    <div id="customersGrid" class="admin-products-container">
+                        <!-- Customer cards injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Calculator / Footer Cart -->
+                <div id="cartBar" class="cart-bar glass-panel hidden">
+                    <div class="cart-info">
+                        <span id="cartItemsCount">0</span> productos - <strong id="cartTotal">S/ 0.00</strong>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn-secondary" onclick="clearCart()">Limpiar</button>
+                        <button id="assignToCustomerBtn" class="btn-primary" onclick="showAssignToCustomer()">Anotar a
+                            Cliente</button>
+                        <button id="viewBoletaBtn" class="btn-primary hidden" onclick="showBoleta()">Ver Boleta</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Section (Hidden by default) -->
+            <section id="adminSection" class="hidden-section">
+                <div class="section-header admin-header">
+                    <h2>Panel de Administración</h2>
+                    <button id="addNewProductBtn" class="btn-success">
+                        <i class="fa-solid fa-plus"></i> Añadir Producto
+                    </button>
+                </div>
+
+                <div id="adminMainCategoryTabs" class="category-tabs glass-panel" style="margin-bottom: 20px;">
+                    <button class="tab-btn active" onclick="switchCategory('alimentos')">ALIMENTOS BALANCEADOS</button>
+                    <button class="tab-btn" onclick="switchCategory('tienda')">TIENDA BENITO</button>
+                    <button class="tab-btn" onclick="switchCategory('tienda_sl')">TIENDA SAN LUISITO</button>
+                </div>
+
+                <div id="adminTiendaSubTabs" class="category-tabs glass-panel hidden"
+                    style="margin-bottom: 20px; transform: scale(0.9); background: rgba(255,255,255,0.4);">
+                    <button class="tab-btn active" onclick="switchSubCategory('galletas')">GALLETAS Y PIQUEOS</button>
+                    <button class="tab-btn" onclick="switchSubCategory('bebidas')">BEBIDAS</button>
+                </div>
+
+                <!-- Admin Products Table/Cards -->
+                <div id="adminProductsContainer" class="admin-products-container">
+                    <!-- Stats and Edit buttons injected here -->
+                </div>
+
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid rgba(0,0,0,0.1);">
+
+                <div class="section-header">
+                    <h3>Consulta Rápida de Precios</h3>
+                    <p>Referencia visual para ventas</p>
+                </div>
+                <!-- The JS will ensure the productsContainer is visible here too or shared -->
+                <div id="adminInventoryView"></div>
+            </section>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Acceso de Dueño</h3>
+                <button type="button" onclick="closeLoginModal()" class="close-btn"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required autocomplete="current-password">
+                </div>
+                <div id="loginErrorMsg" class="error-msg"
+                    style="display: none; color: #e74c3c; margin-bottom: 10px; font-size: 0.9rem;">
+                    Usuario o contraseña incorrectos.
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelLoginBtn" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Product -->
+    <div id="productModal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3 id="modalTitle">Añadir Producto</h3>
+                <button id="closeModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+
+                <div class="form-group">
+                    <label for="productCategory">Categoría</label>
+                    <select id="productCategory" class="form-select" onchange="toggleFormFields()">
+                        <option value="alimentos">Alimentos Balanceados</option>
+                        <option value="galletas">Galletas y Piqueos (Benito)</option>
+                        <option value="bebidas">Bebidas (Benito)</option>
+                        <option value="galletas_sl">Galletas y Piqueos (San Luisito)</option>
+                        <option value="bebidas_sl">Bebidas (San Luisito)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="productName">Nombre del Producto</label>
+                    <input type="text" id="productName" required placeholder="Ej: Ricocan o Gaseosa Inka Cola">
+                </div>
+
+                <div id="measureField" class="form-group hidden">
+                    <label for="productMeasure">Medida (Ej: 600 ML, 1 Litro)</label>
+                    <input type="text" id="productMeasure" placeholder="Ej: 600 ML">
+                </div>
+
+                <div id="alimentosFields">
+                    <div class="form-group">
+                        <label for="productBrand">Marca (Solo para Alimentos)</label>
+                        <input type="text" id="productBrand" placeholder="Ej: Ricocan, Dog Chow...">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group highlight-field">
+                            <label for="priceKilo">Precio Venta x Kilo (S/)</label>
+                            <input type="number" id="priceKilo" min="0" step="any" placeholder="Ej: 7.34">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sackWeight">Peso del Saco (Kg)</label>
+                            <input type="number" id="sackWeight" min="0.1" step="any" placeholder="Ej: 15">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="opacity: 0.8;">
+                            <label for="costSack">Costo del Saco (S/)</label>
+                            <input type="number" id="costSack" min="0" step="any" placeholder="Ej: 80.00">
+                        </div>
+                        <div class="form-group highlight-field">
+                            <label for="priceSack">Precio Venta Saco (S/)</label>
+                            <input type="number" id="priceSack" min="0" step="any" placeholder="Ej: 105.80">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fields for TIENDA (Galletas & Bebidas) -->
+                <div id="tiendaFields" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group" style="opacity: 0.8;">
+                            <label for="costUnit">Costo x Unidad (S/)</label>
+                            <input type="number" id="costUnit" min="0" step="any" placeholder="Ej: 1.50">
+                        </div>
+                        <div class="form-group highlight-field">
+                            <label for="priceUnit">Precio Venta x Unidad (S/)</label>
+                            <input type="number" id="priceUnit" min="0" step="any" placeholder="Ej: 2.50">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="cancelFormBtn" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer Modal -->
+    <div id="customerModal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>Nuevo Cliente</h3>
+                <button type="button" onclick="closeCustomerModal()" class="close-btn"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label>Nombre del Cliente</label>
+                    <input type="text" id="customerName" required placeholder="Ej: Juan Perez">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeCustomerModal()" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Crear Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer Details / Tab Modal -->
+    <div id="customerTabModal" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="tabModalTitle">Cuenta de Cliente</h3>
+                <button type="button" onclick="closeTabModal()" class="close-btn"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="customerTabList" class="tab-list">
+                <!-- Items listed here -->
+            </div>
+            <div class="tab-footer">
+                <div class="tab-total">Total: <span id="customerTabTotal">S/ 0.00</span></div>
+                <div class="form-actions">
+                    <button class="btn-danger" id="clearTabBtn">Borrar Cuenta (Pagado)</button>
+                    <button onclick="closeTabModal()" class="btn-secondary">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign to Customer Selector -->
+    <div id="assignModal" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Anotar a...</h3>
+                <button type="button" onclick="closeAssignModal()" class="close-btn"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="assign-list-header glass-panel" style="margin-bottom: 15px; padding: 10px;">
+                <input type="text" id="newCustomerAssignName" placeholder="Nombre nuevo cliente..."
+                    style="margin-bottom: 10px;">
+                <button class="btn-primary w-100" onclick="handleNewCustomerAndAssign()"><i
+                        class="fa-solid fa-user-plus"></i> Crear y Anotar</button>
+            </div>
+            <div id="assignList" class="assign-list">
+                <!-- Customer list for assignment -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 400px; text-align: center;">
+            <div class="modal-header" style="justify-content: center;">
+                <h3 id="confirmTitle">¿Estás seguro?</h3>
+            </div>
+            <div class="modal-body" style="padding: 20px 0;">
+                <p id="confirmMessage" style="font-size: 1.1rem; color: #333;"></p>
+            </div>
+            <div class="form-actions" style="justify-content: center; gap: 20px;">
+                <button id="confirmCancelBtn" class="btn-secondary" style="min-width: 100px;">Cancelar</button>
+                <button id="confirmAcceptBtn" class="btn-danger" style="min-width: 100px;">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Alert Modal -->
+    <div id="alertModal" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 400px; text-align: center;">
+            <div class="modal-header" style="justify-content: center;">
+                <h3 id="alertTitle">Información</h3>
+            </div>
+            <div class="modal-body" style="padding: 20px 0;">
+                <p id="alertMessage" style="font-size: 1.1rem; color: #333;"></p>
+            </div>
+            <div class="form-actions" style="justify-content: center;">
+                <button onclick="closeAlert()" class="btn-primary" style="min-width: 100px;">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Boleta Modal -->
+    <div id="boletaModal" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3>Resumen de Venta</h3>
+                <button type="button" onclick="closeBoletaModal()" class="close-btn"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="boletaContent" class="boleta-body" style="padding: 10px 0;">
+                <!-- Boleta items -->
+            </div>
+            <div class="boleta-footer" style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #eee;">
+                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.3rem;">
+                    <span>TOTAL:</span>
+                    <span id="boletaTotal">S/ 0.00</span>
+                </div>
+            </div>
+            <div class="form-actions" style="justify-content: center;">
+                <button onclick="closeBoletaModal()" class="btn-secondary">Cerrar</button>
+                <button onclick="clearCart(); closeBoletaModal();" class="btn-primary">Nueva Venta</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="script.js?v=2"></script>
+
+</body>
+
+</html>
