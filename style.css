@@ -892,3 +892,131 @@ input:focus {
     padding: 5px 10px;
     font-size: 0.8rem;
 }
+
+/* Yape Payment Section */
+.yape-wrapper {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.yape-float-btn {
+    background: #742284;
+    /* Yape Purple */
+    color: white;
+    border-radius: 30px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 15px rgba(116, 34, 132, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.yape-float-btn:hover {
+    background: #8e2a9e;
+    transform: translateY(-3px) scale(1.05);
+}
+
+.yape-mini-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.yape-card {
+    width: 280px;
+    padding: 20px;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.yape-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.yape-logo-img {
+    height: 30px;
+}
+
+.close-yape {
+    background: transparent;
+    color: var(--secondary);
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.qr-container {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#yapeQrImg {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.qr-hint {
+    font-size: 0.75rem;
+    color: #888;
+    margin: 0;
+}
+
+.payment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-item .label {
+    font-size: 0.75rem;
+    color: #777;
+    font-weight: 600;
+}
+
+.detail-item .value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+@media (max-width: 600px) {
+    .yape-wrapper {
+        bottom: 80px;
+        right: 15px;
+    }
+
+    .yape-card {
+        width: 250px;
+    }
+}

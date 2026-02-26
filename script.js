@@ -842,4 +842,26 @@ function closeConfirm(res) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+// Yape Toggle Logic
+function toggleYape() {
+    const card = document.getElementById('yapeCard');
+    const btn = document.getElementById('yapeToggleBtn');
+
+    if (card.classList.contains('hidden')) {
+        card.classList.remove('hidden');
+        btn.classList.add('hidden');
+    } else {
+        card.classList.add('hidden');
+        btn.classList.remove('hidden');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+
+    // Yape Toggle Event
+    const toggleBtn = document.getElementById('yapeToggleBtn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleYape);
+    }
+});
