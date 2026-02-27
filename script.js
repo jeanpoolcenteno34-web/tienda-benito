@@ -415,6 +415,14 @@ function setMode(mode) {
     refreshViews();
 }
 
+let searchTimeout;
+function debounce(func, delay = 300) {
+    return (...args) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
 function filterProducts(e) {
     const term = e.target.value.toLowerCase();
     const filtered = getFilteredByCategory().filter(p => p.name.toLowerCase().includes(term) || (p.brand && p.brand.toLowerCase().includes(term)));
@@ -785,8 +793,8 @@ async function handleFormSubmit(e) {
 
 function setupEventListeners() {
     toggleStoreModeBtn.addEventListener('click', attemptToggleAdminMode);
-    searchInput.addEventListener('input', filterProducts);
-    document.getElementById('customerSearchInput').addEventListener('input', renderCustomersView);
+    searchInput.addEventListener('input', debounce(filterProducts));
+    document.getElementById('customerSearchInput').addEventListener('input', debounce(renderCustomersView));
     document.getElementById('addNewProductBtn').addEventListener('click', () => openModal(false));
     closeModalBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);

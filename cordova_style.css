@@ -38,12 +38,22 @@ body {
     font-family: var(--font-main);
     background-color: var(--background);
     /* Subtle background pattern or gradient */
-    background-image:
-        radial-gradient(circle at top right, rgba(242, 106, 27, 0.15), transparent 40%),
-        radial-gradient(circle at bottom left, rgba(39, 174, 96, 0.1), transparent 40%);
-    background-attachment: fixed;
     color: var(--secondary);
     min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    /* Changed from fixed to absolute to reduce paint cost on scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(135deg, rgba(242, 106, 27, 0.05) 0%, rgba(255, 255, 255, 1) 50%, rgba(39, 174, 96, 0.05) 100%);
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Base Utility Classes */
@@ -57,7 +67,8 @@ body {
 
 .active-section {
     display: block;
-    animation: fadeIn var(--transition-normal);
+    animation: fadeIn 0.2s ease-out;
+    will-change: opacity, transform;
 }
 
 @keyframes fadeIn {
@@ -74,8 +85,8 @@ body {
 
 .glass-panel {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
     border-radius: 16px;
@@ -288,14 +299,15 @@ button:active {
 
 .product-row:hover {
     background: rgba(242, 106, 27, 0.04);
-    transform: scale(1.005);
-    z-index: 1;
 }
+
+/* Removed scale on hover for better stability on unstable touch screens */
 
 .row-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    will-change: transform;
 }
 
 .row-info .brand-text {

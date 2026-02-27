@@ -299,6 +299,14 @@ function filterProducts(e) {
     else { renderClientView(filtered); }
 }
 
+let searchTimeout;
+function debounce(func, delay = 300) {
+    return (...args) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
 function openLoginModal() { loginModal.classList.remove('hidden'); loginForm.reset(); document.getElementById('username').focus(); }
 function closeLoginModal() { loginModal.classList.add('hidden'); }
 function handleLoginSubmit(e) {
@@ -575,8 +583,8 @@ async function handleFormSubmit(e) {
 
 function setupEventListeners() {
     toggleStoreModeBtn.addEventListener('click', attemptToggleAdminMode);
-    searchInput.addEventListener('input', filterProducts);
-    document.getElementById('customerSearchInput').addEventListener('input', renderCustomersView);
+    searchInput.addEventListener('input', debounce(filterProducts));
+    document.getElementById('customerSearchInput').addEventListener('input', debounce(renderCustomersView));
     document.getElementById('addNewProductBtn').addEventListener('click', () => openModal(false));
     closeModalBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);
