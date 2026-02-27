@@ -431,9 +431,14 @@ function handleLoginSubmit(e) {
 
 // Cart Logic
 function addToCart(productId) {
-    const p = products.find(x => x.id === productId);
-    if (!p) return;
+    console.log("Adding to cart, ID:", productId);
+    const p = products.find(x => x.id == productId);
+    if (!p) {
+        console.warn("Product not found for ID:", productId);
+        return;
+    }
     cart.push({ ...p, cartId: Date.now() + Math.random() });
+    console.log("Cart updated, current size:", cart.length);
     updateCartUI();
 }
 
