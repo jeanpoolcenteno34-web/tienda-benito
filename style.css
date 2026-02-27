@@ -37,13 +37,24 @@
 body {
     font-family: var(--font-main);
     background-color: var(--background);
-    /* Subtle background pattern or gradient */
+    color: var(--secondary);
+    min-height: 100dvh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image:
         radial-gradient(circle at top right, rgba(242, 106, 27, 0.15), transparent 40%),
         radial-gradient(circle at bottom left, rgba(39, 174, 96, 0.1), transparent 40%);
-    background-attachment: fixed;
-    color: var(--secondary);
-    min-height: 100vh;
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Base Utility Classes */
@@ -53,11 +64,6 @@ body {
 
 .hidden-section {
     display: none;
-}
-
-.active-section {
-    display: block;
-    animation: fadeIn var(--transition-normal);
 }
 
 @keyframes fadeIn {
@@ -70,6 +76,12 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.active-section {
+    display: block;
+    animation: fadeIn var(--transition-normal);
+    will-change: opacity, transform;
 }
 
 .glass-panel {
@@ -290,6 +302,7 @@ button:active {
     background: rgba(242, 106, 27, 0.04);
     transform: scale(1.005);
     z-index: 1;
+    will-change: transform;
 }
 
 .row-price {
@@ -473,18 +486,19 @@ button:active {
     pointer-events: none;
 }
 
+.modal.hidden .modal-content {
+    transform: scale(0.9);
+}
+
 .modal-content {
     width: 100%;
     max-width: 600px;
     padding: 30px;
-    max-height: 90vh;
+    max-height: 90dvh;
     overflow-y: auto;
     transform: scale(1);
     transition: transform 0.3s ease;
-}
-
-.modal.hidden .modal-content {
-    transform: scale(0.9);
+    will-change: transform;
 }
 
 .modal-header {
