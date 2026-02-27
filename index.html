@@ -85,18 +85,6 @@
                     </div>
                 </div>
 
-                <!-- Calculator / Footer Cart -->
-                <div id="cartBar" class="cart-bar glass-panel hidden">
-                    <div class="cart-info">
-                        <span id="cartItemsCount">0</span> productos - <strong id="cartTotal">S/ 0.00</strong>
-                    </div>
-                    <div class="cart-actions">
-                        <button class="btn-secondary" onclick="clearCart()">Limpiar</button>
-                        <button id="assignToCustomerBtn" class="btn-primary" onclick="showAssignToCustomer()">Anotar a
-                            Cliente</button>
-                        <button id="viewBoletaBtn" class="btn-primary hidden" onclick="showBoleta()">Ver Boleta</button>
-                    </div>
-                </div>
             </section>
 
             <!-- Admin Section (Hidden by default) -->
@@ -399,6 +387,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Calculator / Footer Cart -->
+    <div id="cartBar" class="cart-bar glass-panel hidden">
+        <div class="cart-info">
+            <span id="cartItemsCount">0</span> productos - <strong id="cartTotal">S/ 0.00</strong>
+        </div>
+        <div class="cart-actions">
+            <button class="btn-secondary" onclick="clearCart()">Limpiar</button>
+            <button id="assignToCustomerBtn" class="btn-primary" onclick="showAssignToCustomer()">Anotar a
+                Cliente</button>
+            <button id="viewBoletaBtn" class="btn-primary hidden" onclick="showBoleta()">Ver Boleta</button>
         </div>
     </div>
 

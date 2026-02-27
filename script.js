@@ -171,6 +171,7 @@ function getFilteredByCategory() {
 
 function switchCategory(cat) {
     currentCategory = cat;
+    window.scrollTo(0, 0); // Reset scroll to avoid "blank" views
 
     // Highlight main tabs
     document.querySelectorAll('#mainCategoryTabs .tab-btn, #adminMainCategoryTabs .tab-btn').forEach(btn => {
@@ -250,6 +251,7 @@ function switchCategory(cat) {
 
 function switchSubCategory(sub) {
     currentSubCategory = sub;
+    window.scrollTo(0, 0); // Reset scroll
     document.querySelectorAll('#tiendaSubTabs .tab-btn, #adminTiendaSubTabs .tab-btn').forEach(btn => {
         const onclick = btn.getAttribute('onclick') || '';
         if (onclick.includes(`'${sub}'`)) btn.classList.add('active');
