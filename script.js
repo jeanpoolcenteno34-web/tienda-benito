@@ -201,44 +201,46 @@ function switchCategory(cat) {
     const clientInventoryArea = document.getElementById('clientInventoryArea');
     const customersArea = document.getElementById('customersArea');
 
-    if (cat === 'clientes') {
-        clientInventoryArea.classList.add('hidden');
-        customersArea.classList.remove('hidden');
-    } else {
-        clientInventoryArea.classList.remove('hidden');
-        customersArea.classList.add('hidden');
+    if (clientInventoryArea && customersArea) {
+        if (cat === 'clientes') {
+            clientInventoryArea.classList.add('hidden');
+            customersArea.classList.remove('hidden');
+        } else {
+            clientInventoryArea.classList.remove('hidden');
+            customersArea.classList.add('hidden');
 
-        const container = document.getElementById('productsContainer');
-        const colMeasure = document.getElementById('colMeasure');
-        const colKilo = document.querySelector('.col-kilo');
-        const colSack = document.querySelector('.col-sack');
+            const container = document.getElementById('productsContainer');
+            const colMeasure = document.getElementById('colMeasure');
+            const colKilo = document.querySelector('.col-kilo');
+            const colSack = document.querySelector('.col-sack');
 
-        if (container) {
-            if (isTienda) {
-                container.classList.add('tienda-mode');
-                const isBebidas = (currentSubCategory === 'bebidas');
+            if (container) {
+                if (isTienda) {
+                    container.classList.add('tienda-mode');
+                    const isBebidas = (currentSubCategory === 'bebidas');
 
-                if (colMeasure) {
-                    if (isBebidas) colMeasure.classList.remove('hidden');
-                    else colMeasure.classList.add('hidden');
-                }
+                    if (colMeasure) {
+                        if (isBebidas) colMeasure.classList.remove('hidden');
+                        else colMeasure.classList.add('hidden');
+                    }
 
-                if (colKilo) colKilo.innerText = 'Precio Unidad';
-                if (colSack) colSack.style.display = 'none';
+                    if (colKilo) colKilo.innerText = 'Precio Unidad';
+                    if (colSack) colSack.style.display = 'none';
 
-                // Adjust grid based on whether measure is shown
-                if (isBebidas) {
-                    container.style.setProperty('--grid-layout', '2fr 1fr 1fr 60px');
+                    // Adjust grid based on whether measure is shown
+                    if (isBebidas) {
+                        container.style.setProperty('--grid-layout', '2fr 1fr 1fr 60px');
+                    } else {
+                        container.style.setProperty('--grid-layout', '3.2fr 1.2fr 60px');
+                    }
+                    container.style.paddingRight = '10px';
                 } else {
-                    container.style.setProperty('--grid-layout', '3.2fr 1.2fr 60px');
+                    container.classList.remove('tienda-mode');
+                    if (colMeasure) colMeasure.classList.add('hidden');
+                    if (colKilo) colKilo.innerText = 'Precio Kilo';
+                    if (colSack) colSack.style.display = 'block';
+                    container.style.setProperty('--grid-layout', '2.2fr 1fr 1fr');
                 }
-                container.style.paddingRight = '10px';
-            } else {
-                container.classList.remove('tienda-mode');
-                if (colMeasure) colMeasure.classList.add('hidden');
-                if (colKilo) colKilo.innerText = 'Precio Kilo';
-                if (colSack) colSack.style.display = 'block';
-                container.style.setProperty('--grid-layout', '2.2fr 1fr 1fr');
             }
         }
     }
